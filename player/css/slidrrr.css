@@ -1,0 +1,306 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: #333;
+}
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#header {
+	height: 90px;
+	width: 1050px;
+	margin: 0 auto;
+	position: relative;
+}
+#header h1 {
+	background: transparent url('../img/slidrrr.png') no-repeat;
+	width: 240px;
+	height: 27px;
+	position: absolute;
+	top: 33px;
+	margin: 0;
+	padding: 0;
+	text-indent: -3000px;
+}
+
+#container {
+	width: 1050px;
+	height: 640px;
+	margin: 0 auto;
+	position: relative;
+}
+div.slide-show {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+div.slide-show div.slides {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+div.slide-show div.slides img {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+div.slide-show div.slides div.next,
+div.slide-show div.slides div.prev {
+	position: absolute;
+	top: 0;
+	width: 79px;
+	height: 79px;
+	z-index: 10;
+	cursor: pointer;
+	display: none;
+}
+div.slide-show div.slides:hover div.next,
+div.slide-show div.slides:hover div.prev {
+	display: block;
+}
+div.slide-show div.last-slide:hover div.next,
+div.slide-show div.first-slide:hover div.prev {
+	display: none;
+}
+div.slide-show div.slides div.next {
+	right: 0;
+	background-image: url('../img/slides-next.png');
+}
+div.slide-show div.slides div.prev {
+	left: 0;
+	background-image: url('../img/slides-prev.png');
+}
+
+div.slide-show div.video {
+	position: absolute;
+	width: 280px;
+	height: 170px;
+	bottom: 40px;
+	right: 0;
+	background-color: black;
+	z-index: 50;
+}
+div.slide-show div.video div.drag {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	cursor: move;
+	top: 0;
+	left: 0;
+}
+body.ie div.slide-show div.video div.drag {
+	background: transparent url('../img/pixel.gif');
+}
+div.slide-show div.video-drop {
+	position: absolute;
+	background: rgba(100, 100, 100, 0.5);
+	border: 1px dashed #3d4951;
+}
+body.ie6 div.slide-show div.video-drop,
+body.ie7 div.slide-show div.video-drop,
+body.ie8 div.slide-show div.video-drop {
+	background: transparent;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7f656565,endColorstr=#7f656565);
+	zoom: 1;
+}
+
+div.controls {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	background: #696969 url('../img/controls-bg.png');
+}
+div.controls div.timeline {
+	position: absolute;
+	top: 16px;
+	left: 50px;
+	height: 10px;
+	background: #696969 url('../img/timeline-bg.png');
+}
+div.controls div.timeline-start,
+div.controls div.timeline-end {
+	position: absolute;
+	top: 16px;
+	height: 10px;
+	width: 4px;
+	overflow: hidden;
+}
+div.controls div.timeline-start {
+	left: 46px;
+	background-image: url('../img/timeline-start.png');
+}
+div.controls div.timeline-end {
+	right: 402px;
+	background-image: url('../img/timeline-end.png');
+}
+
+div.controls div.slide {
+	position: absolute;
+	border-right: 1px solid black;
+	top: 0;
+	height: 9px;
+	overflow: hidden;
+	z-index: 10;
+	cursor: pointer;
+}
+div.controls div.last-slide {
+	border-right: none;
+}
+div.controls div.slide div {
+	background-image: url('../img/timeline-act.png');
+	height: 100%;
+	width: 0;
+}
+
+div.controls div.slide:hover {
+	background-image: url('../img/timeline-hover.png');
+}
+div.controls div.slide:hover div {
+	background-image: url('../img/timeline-act-hover.png');
+}
+
+div.controls div.timer {
+	position: absolute;
+	top: 11px;
+	right: 76px;
+	width: 100px;
+	text-align: center;
+	text-shadow: 2px 2px 2px black;
+	color: #888;
+	font: bold 11px Verdana;
+}
+div.controls div.timer span {
+	color: #bbb;
+}
+div.controls div.sections {
+	position: absolute;
+	top: 4px;
+	right: 177px;
+	width: 209px;
+	height: 32px;
+	background-image: url('../img/sections.png');
+	cursor: pointer;
+}
+div.controls div.sections div.current {
+	color: #F8F8F8;
+	font: bold 11px Verdana;
+	margin: 7px 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 170px;
+}
+div.controls div.sections-list {
+	position: absolute;
+	bottom: 36px;
+	width: 209px;
+	right: 177px;
+	background: rgba(104, 104, 104, 0.9);
+	z-index: 50;
+}
+div.controls div.sections-list div {
+	cursor: pointer;
+	color: #f8f8f8;
+	font: 11px Verdana;
+	padding: 3px 10px;
+}
+div.controls div.sections-list div:hover {
+	background: rgba(255, 255, 255, 0.2);
+}
+/* http://css-tricks.com/rgba-browser-support/ */
+body.ie6 div.sections-list,
+body.ie7 div.sections-list,
+body.ie8 div.sections-list {
+	background: transparent;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5686868,endColorstr=#e5686868);
+	zoom: 1;
+}
+body.ie6 div.sections-list div:hover,
+body.ie7 div.sections-list div:hover,
+body.ie8 div.sections-list div:hover {
+	background: transparent;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33FFFFFF,endColorstr=#33FFFFFF);
+	zoom: 1;
+}
+
+div.controls div.marker {
+	position: absolute;
+	top: -3px;
+	left: -8px;
+	width: 18px;
+	height: 18px;
+	background-image: url('../img/marker.png');
+	z-index: 20;
+}
+div.controls div.thumb {
+	background: white url('../img/toolbar-thumb-loader.gif') no-repeat center center;
+	position: absolute;
+	top: -75px;
+	border: 1px solid black;
+	overflow: hidden;
+	z-index: 5;
+}
+
+div.controls div.button {
+	width: 32px;
+	height: 32px;
+	margin: 4px;
+	background: transparent no-repeat center center;
+	cursor: pointer;
+}
+
+div.controls div.fullscreen {
+	position: absolute;
+	right: 0;
+	background-image: url('../img/btn-fullscreen.png');
+}
+div.controls div.resize {
+	position: absolute;
+	right: 36px;
+	background-image: url('../img/btn-resize.png');
+}
+
+div.controls div.play {
+	position: absolute;
+	left: 0;
+	background-image: url('../img/btn-play.png');
+}
+div.controls div.pause {
+	background-image: url('../img/btn-pause.png');
+}
+
+div.tooltip {
+	position: absolute;
+	top: -40px;
+	left: -16px;
+	z-index: 1000;
+}
+div.tooltip div.inner {
+	color: #2b2c2c;
+	font: bold 11px Verdana;
+	border: 1px solid #555;
+	background-image: url('../img/tooltip-bg.png');
+	padding: 5px;
+	border-radius: 5px;
+	height: 27px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+div.tooltip div.arrow {
+	position: absolute;
+	top: 25px;
+	left: 10px;
+	width: 12px;
+	height: 9px;
+	background-image: url('../img/tooltip-arrow.png');
+	overflow: hidden;
+}
+div.tooltip-right div.arrow {
+	left: auto;
+	right: 10px;
+}
