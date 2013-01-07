@@ -15,6 +15,15 @@ header('Content-Type: text/html; charset=UTF-8');
 <script src="js/controls.js" type="text/javascript"></script>
 <script src="js/player.js" type="text/javascript"></script>
 <script src="js/fullscreen.js" type="text/javascript"></script>
+<script>
+//Feedback
+jQuery.ajax({
+    url: "https://jira.arkon.hu/s/hu_HU-s2zus3/773/108/1.2.5/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?collectorId=b50e8fd5",
+    type: "get",
+    cache: true,
+    dataType: "script"
+});
+</script>
 <script type="text/javascript">
 $(function () {
 	Slidrrr.init({
