@@ -11,7 +11,7 @@ html, body {
 
 #header {
 	height: 90px;
-	width: 1050px;
+	width: 1000px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -27,8 +27,8 @@ html, body {
 }
 
 #container {
-	width: 1050px;
-	height: 640px;
+	width: 1000px;
+	height: 624px;
 	margin: 0 auto;
 	position: relative;
 }
@@ -76,10 +76,10 @@ div.slide-show div.slides div.prev {
 
 div.slide-show div.video {
 	position: absolute;
-	width: 280px;
-	height: 170px;
-	bottom: 40px;
-	right: 0;
+	width: 380px;
+	height: 214px;
+	bottom: 50px;
+	right: 10px;
 	background-color: black;
 	z-index: 50;
 	cursor: move;
@@ -321,7 +321,7 @@ div.tooltip-right div.arrow {
 }
 
 div.debug {
-	width: 1050px;
+	width: 1000px;
 	margin: 0 auto;
 	color: white;
 	font: 11px Verdana;

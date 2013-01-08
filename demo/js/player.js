@@ -104,12 +104,12 @@
 			this.el.after('<div class="video-drop"></div><div class="video-drop"></div>');
 			this.dropItems = $('div.video-drop', this.el.parent());
 			this.dropItems.css({
-				right: 0,
+				right: 10,
 				width: this.getWidth(),
 				height: this.getHeight(),
 				opacity: 0.5
 			}).hide();
-			this.dropItems.first().css('top', 0);
+			this.dropItems.first().css('top', 10);
 			this.dropItems.last().css('bottom', this.el.css('bottom'));
 		},
 		fixPosition: function () {

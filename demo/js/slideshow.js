@@ -113,48 +113,73 @@
 				marginTop;
 			if (this.visualType === this.BIG_SLIDE) {
 				slidesHeight = height;
+				playerWidth = width * 0.38;
 			} else if (this.visualType === this.SIDE_BY_SIDE) {
-				slidesHeight = parseInt(width / 2, 10);
-				playerHeight = slidesHeight;
-				playerWidth = parseInt(playerHeight / 9 * 16, 10);
+				slidesWidth = Math.round(width * 0.6);
+				playerHeight = Math.round(width * 0.6 * 3 / 4);
+				playerWidth = Math.round(playerHeight / 9 * 16);
 			} else if (this.visualType === this.BIG_PLAYER) {
-				slidesHeight = width / 6;
+				playerWidth = Math.round(width * 0.8);
+				slidesWidth = width - playerWidth;
 			} else {
 				throw new Error('this.visualType is wrong: ' + this.visualType);
 			}
-			slidesWidth = parseInt(slidesHeight * 4 / 3, 10);
+			if (!slidesWidth) {
+				slidesWidth = Math.round(slidesHeight * 4 / 3);
+			}
+			if (!slidesHeight) {
+				slidesHeight = Math.round(slidesWidth * 3 / 4);
+			}
 			if (!playerWidth) {
-				playerWidth = width - slidesWidth;
+				playerWidth = Math.round(playerHeight * 9 / 16);
 			}
 			if (!playerHeight) {
-				playerHeight = parseInt(playerWidth / 16 * 9, 10);
+				playerHeight = Math.round(playerWidth / 16 * 9);
 			}
+			// atmeretezes:
 			this.slidesPanel.setSize(slidesWidth, slidesHeight);
 			this.player.setSize(playerWidth, playerHeight);
+			// player mozgatas:
 			if (this.visualType === this.BIG_SLIDE) {
 				this.player.enableDragging();
-				this.player.fixPosition();
-				this.slidesPanel.el.css('top', 0);
 			} else {
 				this.player.disableDragging();
-				marginTop = parseInt((height - Math.max(slidesHeight, playerHeight)) / 2, 10);
-				this.player.el.css('top', marginTop);
-				this.slidesPanel.el.css('top', marginTop);
 			}
+			// pozicio javitas:
+			if (this.visualType === this.BIG_SLIDE) {
+				this.player.fixPosition();
+				this.slidesPanel.el.css({
+					top: 0,
+					left: 0
+				});
+			} else {
+				marginTop = Math.round((height - Math.max(slidesHeight, playerHeight)) / 2);
+				this.player.el.css({
+					top: marginTop,
+					right: 0
+				});
+				this.slidesPanel.el.css({
+					top: marginTop,
+					left: 0
+				});
+			}
+			// overflow + z-index javitas:
 			if (this.visualType === this.SIDE_BY_SIDE) {
 				this.el.css('overflow', 'hidden');
 				this.player.el.css({
 					'z-index': 0,
-					right: parseInt((width - playerWidth - slidesWidth) / 2, 10)
+					right: Math.round((width - playerWidth - slidesWidth) / 2)
 				});
 				this.slidesPanel.el.css('z-index', 1);
 			} else {
 				this.el.css('overflow', 'visible');
-				this.player.el.css({
-					'z-index': 1,
-					right: 0
-				});
+				this.player.el.css('z-index', 1);
 				this.slidesPanel.el.css('z-index', 0);
+			}
+			// nagy player eseten helycsere:
+			if (this.visualType === this.BIG_PLAYER) {
+				this.player.el.css('right', width - playerWidth);
+				this.slidesPanel.el.css('left', playerWidth);
 			}
 		}
 	});
