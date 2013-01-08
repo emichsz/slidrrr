@@ -1,0 +1,1 @@
+java -jar ext-doc.jar -p ext.xml -o ../ -t template/ext/template.xml -verbose

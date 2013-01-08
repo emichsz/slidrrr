@@ -10,9 +10,7 @@
 	* Az alap lejatszo osztaly, amely meghatarozza, hogy milyen fuggvenyeket varunk a leszarmazottaktol.
 	*/
 	Slidrrr.player.Base = Slidrrr.extend(Slidrrr.Component, {
-		constructor: function () {
-			Slidrrr.player.Base.superclass.constructor.apply(this, arguments);
-		},
+		align: 'bottom',
 		/**
 		 * Visszaadja a video hosszat.
 		 * @return {Number}
@@ -64,6 +62,7 @@
 				this.play();
 			}
 			this.createDragDropItems();
+			this.createToggleBtn();
 		},
 		onStateChange: function () {
 			/**
@@ -88,6 +87,11 @@
 						if (t < diff) {
 							diff = t;
 							item = me.dropItems[i];
+							if (i === 0) {
+								me.align = 'top';
+							} else {
+								me.align = 'bottom';
+							}
 						}
 					}
 					me.copyCssPositionProperties(item);
@@ -108,6 +112,17 @@
 			this.dropItems.first().css('top', 0);
 			this.dropItems.last().css('bottom', this.el.css('bottom'));
 		},
+		fixPosition: function () {
+			var item;
+			if (this.dropItems) {
+				if (this.align === 'bottom') {
+					item = this.dropItems.last()[0];
+				} else {
+					item = this.dropItems.first()[0];
+				}
+				this.copyCssPositionProperties(item);
+			}
+		},
 		copyCssPositionProperties: function (dom) {
 			var list = ['top', 'left', 'bottom', 'right'], i;
 			for (i = 0; i < list.length; i++) {
@@ -119,6 +134,25 @@
 				this.dropItems.css({width: width, height: height});
 			}
 			return Slidrrr.player.Base.superclass.setSize.call(this, width, height);
+		},
+		createToggleBtn: function () {
+			this.el.append('<div class="toggle"></div>');
+			this.toggleBtn = $('div.toggle', this.el);
+			this.toggleBtn.on('click', $.proxy(this.fireEvent, this, 'toggle'));
+		},
+		/**
+		 * Engedelyezzuk a mozgatast.
+		 */
+		enableDragging: function () {
+			this.el.draggable('enable');
+			this.el.css('cursor', 'move');
+		},
+		/**
+		 * Tiltjuk a mozgatast.
+		 */
+		disableDragging: function () {
+			this.el.draggable('disable');
+			this.el.css('cursor', 'default');
 		}
 	});
 	/**
@@ -207,18 +241,29 @@
 		getDuration: function () {
 			return this.yt.getDuration();
 		},
+		/* Sajnos egy buta bug-ba futottam bele, mobilon mind a megallitas,
+		 * mind az elinditas utan nincs/illetve kesik a status valtas esemeny,
+		 * emiatt kenytelen voltam kezzel belenyulni.
+		 */
 		pause: function () {
 			this.yt.pauseVideo();
+			if ($.browser.mobile) {
+				this.yt.i.playerState = YT.PlayerState.PAUSED;
+				this.onStateChange();
+			}
 			return this;
 		},
 		play: function () {
 			this.yt.playVideo();
+			if ($.browser.mobile) {
+				this.yt.i.playerState = YT.PlayerState.PLAYING;
+				this.onStateChange();
+			}
 			return this;
 		},
 		gotoAndPlay: function (time) {
 			this.yt.seekTo(time);
-			this.yt.playVideo();
-			return this;
+			return this.play();
 		},
 		getCurrentTime: function () {
 			return this.yt.getCurrentTime();

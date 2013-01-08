@@ -1,0 +1,141 @@
+<!DOCTYPE html><html><head><title>tooltip.js</title><meta http-equiv="Content-type" content="text/html; charset=utf-8" /></head><body><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">/*jslint plusplus: true */</span>
+<span style="color: #009966; font-style: italic;">/*global window, document, $, Slidrrr */</span>
+&nbsp;
+<span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #3366CC;">&quot;use strict&quot;</span><span style="color: #339933;">;</span>
+    <span style="color: #006600; font-style: italic;"><a name="cls-Slidrrr.ToolTip"></a></span><span style="color: #006600; font-style: italic;">/**
+     * @class Slidrrr.ToolTip
+     * @extends Slidrrr.Component
+     * A gyorstipp elem.
+     */</span>
+    Slidrrr.<span style="color: #660066;">ToolTip</span> <span style="color: #339933;">=</span> Slidrrr.<span style="color: #660066;">extend</span><span style="color: #009900;">&#40;</span>Slidrrr.<span style="color: #660066;">Component</span><span style="color: #339933;">,</span> <span style="color: #009900;">&#123;</span>
+        offsetX<span style="color: #339933;">:</span> <span style="color: #CC0000;">0</span><span style="color: #339933;">,</span>
+        offsetY<span style="color: #339933;">:</span> <span style="color: #CC0000;">0</span><span style="color: #339933;">,</span>
+        text<span style="color: #339933;">:</span> <span style="color: #3366CC;">''</span><span style="color: #339933;">,</span>
+        <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.ToolTip-setText"></a></span><span style="color: #006600; font-style: italic;">/**
+         * A gyorstipp szovegenek modositasa.
+         * @param {String} text
+         */</span>
+        setText<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>text<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">text</span> <span style="color: #339933;">!==</span> text<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">text</span> <span style="color: #339933;">=</span> text<span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">textEl</span>.<span style="color: #660066;">html</span><span style="color: #009900;">&#40;</span>text<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+            <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+        visible<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">false</span><span style="color: #339933;">,</span>
+        <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.ToolTip-show"></a></span><span style="color: #006600; font-style: italic;">/**
+         * A gyorstipp megjelenitese.
+         * @param {String} text
+         */</span>
+        show<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">visible</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">show</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">visible</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">true</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+            <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+        <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.ToolTip-hide"></a></span><span style="color: #006600; font-style: italic;">/**
+         * A gyorstipp eltuntetese.
+         * @param {String} text
+         */</span>
+        hide<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">visible</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">hide</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">visible</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">false</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+            <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #000066; font-weight: bold;">this</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+        render<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">addClass</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'tooltip'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">html</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'&lt;div class=&quot;inner&quot;&gt;'</span> <span style="color: #339933;">+</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">text</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;&lt;/div&gt;'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">textEl</span> <span style="color: #339933;">=</span> $<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'div.inner'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">offsetX</span> <span style="color: #339933;">=</span> parseInt<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">css</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'left'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #CC0000;">10</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">||</span> <span style="color: #CC0000;">0</span><span style="color: #339933;">;</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">offsetY</span> <span style="color: #339933;">=</span> parseInt<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">css</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'top'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #CC0000;">10</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">||</span> <span style="color: #CC0000;">0</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+        <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.ToolTip-move"></a></span><span style="color: #006600; font-style: italic;">/**
+         * A gyorstipp mozgatasa a megadott poziciora.
+         * @param {Number} x
+         * @param {Number} y
+         */</span>
+        move<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>x<span style="color: #339933;">,</span> y<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #003366; font-weight: bold;">var</span> left <span style="color: #339933;">=</span> x <span style="color: #339933;">+</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">offsetX</span><span style="color: #339933;">,</span>
+                top <span style="color: #339933;">=</span> y <span style="color: #339933;">+</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">offsetY</span><span style="color: #339933;">,</span>
+                windowWidth <span style="color: #339933;">=</span> $<span style="color: #009900;">&#40;</span>window<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">width</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+                toolTipWidth <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">getWidth</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #006600; font-style: italic;">// ha jobbra kilogna:</span>
+            <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>windowWidth <span style="color: #339933;">&lt;=</span> left <span style="color: #339933;">+</span> toolTipWidth<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">addClass</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'tooltip-right'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                left <span style="color: #339933;">-=</span> toolTipWidth <span style="color: #339933;">+</span> <span style="color: #009900;">&#40;</span><span style="color: #CC0000;">2</span> <span style="color: #339933;">*</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">offsetX</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                left <span style="color: #339933;">=</span> Math.<span style="color: #660066;">min</span><span style="color: #009900;">&#40;</span>windowWidth <span style="color: #339933;">-</span> toolTipWidth<span style="color: #339933;">,</span> left<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">removeClass</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'tooltip-right'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">el</span>.<span style="color: #660066;">css</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#123;</span>left<span style="color: #339933;">:</span> left<span style="color: #339933;">,</span> top<span style="color: #339933;">:</span> top<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #006600; font-style: italic;"><a name="cls-Slidrrr.ToolTipManager"></a></span><span style="color: #006600; font-style: italic;">/**
+     * @class Slidrrr.ToolTipManager
+     * A kulonbozo helyen megjeleno tooltip-et itt kezeljuk le.
+     * @singleton
+     */</span>
+    Slidrrr.<span style="color: #660066;">ToolTipManager</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #003366; font-weight: bold;">var</span> tooltip<span style="color: #339933;">,</span> currentEl<span style="color: #339933;">;</span>
+        <span style="color: #006600; font-style: italic;">// megjegyzes: ha atmeretezzuk az ablakot, akkor tunjon el a tooltip!</span>
+        $<span style="color: #009900;">&#40;</span>window<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">resize</span><span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>tooltip <span style="color: #339933;">&amp;&amp;</span> tooltip.<span style="color: #660066;">visible</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                tooltip.<span style="color: #660066;">hide</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #006600; font-style: italic;">// megjegyzes: fullscreen eseten at kell mozgatni az elemet:</span>
+        $<span style="color: #009900;">&#40;</span>window<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">resize</span><span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>tooltip<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #003366; font-weight: bold;">var</span> owner <span style="color: #339933;">=</span> Slidrrr.<span style="color: #660066;">util</span>.<span style="color: #660066;">FullScreen</span>.<span style="color: #660066;">getEl</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">||</span> $<span style="color: #009900;">&#40;</span>document.<span style="color: #660066;">body</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                owner.<span style="color: #660066;">append</span><span style="color: #009900;">&#40;</span>tooltip.<span style="color: #660066;">el</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.ToolTipManager-getToolTip"></a></span><span style="color: #006600; font-style: italic;">/**
+             * Visszaadja a ToolTipManager altal hasznalt ToolTip elemet
+             */</span>
+            getToolTip<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span>tooltip<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    tooltip <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">createToolTip</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+                <span style="color: #000066; font-weight: bold;">return</span> tooltip<span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            createToolTip<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #003366; font-weight: bold;">var</span> id <span style="color: #339933;">=</span> Slidrrr.<span style="color: #660066;">id</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                $<span style="color: #009900;">&#40;</span>document.<span style="color: #660066;">body</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">append</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'&lt;div id=&quot;'</span> <span style="color: #339933;">+</span> id <span style="color: #339933;">+</span> <span style="color: #3366CC;">'&quot;&gt;&lt;/div&gt;'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #003366; font-weight: bold;">new</span> Slidrrr.<span style="color: #660066;">ToolTip</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#123;</span>
+                    el<span style="color: #339933;">:</span> $<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'#'</span> <span style="color: #339933;">+</span> id<span style="color: #009900;">&#41;</span>
+                <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            textRefresh<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>currentEl<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    tooltip.<span style="color: #660066;">setText</span><span style="color: #009900;">&#40;</span>currentEl.<span style="color: #660066;">data</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'toolTip'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.ToolTipManager-register"></a></span><span style="color: #006600; font-style: italic;">/**
+             * A HTML elemen aktivalja a gyorstippet.
+             * @param {jQuery} el
+             */</span>
+            register<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>el<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #003366; font-weight: bold;">var</span> me <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;">this</span><span style="color: #339933;">,</span> fn <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    tooltip.<span style="color: #660066;">move</span><span style="color: #009900;">&#40;</span>e.<span style="color: #660066;">pageX</span><span style="color: #339933;">,</span> e.<span style="color: #660066;">pageY</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>
+                el.<span style="color: #660066;">hover</span><span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    <span style="color: #003366; font-weight: bold;">var</span> tooltip <span style="color: #339933;">=</span> me.<span style="color: #660066;">getToolTip</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    tooltip.<span style="color: #660066;">setText</span><span style="color: #009900;">&#40;</span>el.<span style="color: #660066;">data</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'toolTip'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">show</span><span style="color: #009900;">&#40;</span>el<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    $<span style="color: #009900;">&#40;</span>document<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">mousemove</span><span style="color: #009900;">&#40;</span>fn<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    currentEl <span style="color: #339933;">=</span> el<span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    <span style="color: #003366; font-weight: bold;">var</span> tooltip <span style="color: #339933;">=</span> me.<span style="color: #660066;">getToolTip</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    tooltip.<span style="color: #660066;">hide</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    $<span style="color: #009900;">&#40;</span>document<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">unbind</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'mousemove'</span><span style="color: #339933;">,</span> fn<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    currentEl <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></body></html>

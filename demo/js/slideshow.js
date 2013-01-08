@@ -9,9 +9,12 @@
 	 * A slide-okat, a control elemeket es a videot osszefogo elem.
 	 */
 	Slidrrr.SlideShow = Slidrrr.extend(Slidrrr.Component, {
-		isBigSlide: true,
+		BIG_SLIDE: 0,
+		BIG_PLAYER: 1,
+		SIDE_BY_SIDE: 2,
 		constructor: function () {
 			Slidrrr.SlideShow.superclass.constructor.apply(this, arguments);
+			this.visualType = this.BIG_SLIDE;
 			this.createItems();
 			this.fixSize();
 			$(window).resize($.proxy(this.fixSize, this));
@@ -42,7 +45,11 @@
 				autoPlay: true,
 				listeners: {
 					scope: this,
-					stateChange: this.onPlayerStateChange
+					stateChange: this.onPlayerStateChange,
+					toggle: function () {
+						this.visualType = this.visualType === this.BIG_PLAYER ? this.BIG_SLIDE : this.BIG_PLAYER;
+						this.fixSize();
+					}
 				}
 			});
 		},
@@ -55,7 +62,7 @@
 				listeners: {
 					scope: this,
 					clickResize: function () {
-						this.isBigSlide = !this.isBigSlide;
+						this.visualType = this.visualType === this.SIDE_BY_SIDE ? this.BIG_SLIDE : this.SIDE_BY_SIDE;
 						this.fixSize();
 					}
 				}
@@ -102,17 +109,53 @@
 				slidesHeight,
 				slidesWidth,
 				playerHeight,
-				playerWidth;
-			if (this.isBigSlide) {
+				playerWidth,
+				marginTop;
+			if (this.visualType === this.BIG_SLIDE) {
 				slidesHeight = height;
+			} else if (this.visualType === this.SIDE_BY_SIDE) {
+				slidesHeight = parseInt(width / 2, 10);
+				playerHeight = slidesHeight;
+				playerWidth = parseInt(playerHeight / 9 * 16, 10);
+			} else if (this.visualType === this.BIG_PLAYER) {
+				slidesHeight = width / 6;
 			} else {
-				slidesHeight = parseInt(width / 2 * (3 / 4), 10);
+				throw new Error('this.visualType is wrong: ' + this.visualType);
 			}
 			slidesWidth = parseInt(slidesHeight * 4 / 3, 10);
-			playerWidth = width - slidesWidth;
-			playerHeight = parseInt(playerWidth / 16 * 9, 10);
+			if (!playerWidth) {
+				playerWidth = width - slidesWidth;
+			}
+			if (!playerHeight) {
+				playerHeight = parseInt(playerWidth / 16 * 9, 10);
+			}
 			this.slidesPanel.setSize(slidesWidth, slidesHeight);
 			this.player.setSize(playerWidth, playerHeight);
+			if (this.visualType === this.BIG_SLIDE) {
+				this.player.enableDragging();
+				this.player.fixPosition();
+				this.slidesPanel.el.css('top', 0);
+			} else {
+				this.player.disableDragging();
+				marginTop = parseInt((height - Math.max(slidesHeight, playerHeight)) / 2, 10);
+				this.player.el.css('top', marginTop);
+				this.slidesPanel.el.css('top', marginTop);
+			}
+			if (this.visualType === this.SIDE_BY_SIDE) {
+				this.el.css('overflow', 'hidden');
+				this.player.el.css({
+					'z-index': 0,
+					right: parseInt((width - playerWidth - slidesWidth) / 2, 10)
+				});
+				this.slidesPanel.el.css('z-index', 1);
+			} else {
+				this.el.css('overflow', 'visible');
+				this.player.el.css({
+					'z-index': 1,
+					right: 0
+				});
+				this.slidesPanel.el.css('z-index', 0);
+			}
 		}
 	});
 }());

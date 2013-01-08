@@ -54,6 +54,9 @@
 					// TODO: lekérhető valahogy a full screen elem?
 					el = element;
 				}
+				if ($.browser.safari) {
+					this.resizeRepeater();
+				}
 			},
 			/**
 			 * A teljes kepernyo mod kikapcsolasa.
@@ -67,6 +70,20 @@
 					document.webkitCancelFullScreen();
 				}
 				el = null;
+				if ($.browser.safari) {
+					this.resizeRepeater();
+				}
+			},
+			// private
+			/*
+			 * Safari a FullScreen valtast animalva vegzi, a resize
+			 * esemeny nem mindig a megfelelo idoben kovetkezik be, emiatt:
+			 */
+			resizeRepeater: function () {
+				var win = $(window), fn = $.proxy(win.resize, win), i;
+				for (i = 0; i < 20; i++) {
+					window.setTimeout(fn, i * 100);
+				}
 			}
 		};
 	}());

@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><title>fullscreen.js</title><meta http-equiv="Content-type" content="text/html; charset=utf-8" /></head><body><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">/*jslint plusplus: true, todo: true */</span>
+<span style="color: #009966; font-style: italic;">/*global document, Slidrrr */</span>
+&nbsp;
+<span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #3366CC;">&quot;use strict&quot;</span><span style="color: #339933;">;</span>
+    Slidrrr.<span style="color: #660066;">ns</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'Slidrrr.util'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    <span style="color: #006600; font-style: italic;"><a name="cls-Slidrrr.util.FullScreen"></a></span><span style="color: #006600; font-style: italic;">/**
+     * @class Slidrrr.util.FullScreen
+     * Segedfuggvenyek a teljes kepernyos modhoz.
+     * @singleton
+     */</span>
+    Slidrrr.<span style="color: #660066;">util</span>.<span style="color: #660066;">FullScreen</span> <span style="color: #339933;">=</span> <span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #003366; font-weight: bold;">var</span> el<span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #009900;">&#123;</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.util.FullScreen-isSupport"></a></span><span style="color: #006600; font-style: italic;">/**
+             * Visszaadja, hogy tamogatja-e a bongeszo a teljes kepernyos modot?
+             * @return {Boolean}
+             */</span>
+            isSupport<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #003366; font-weight: bold;">var</span> doc <span style="color: #339933;">=</span> document.<span style="color: #660066;">documentElement</span><span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #3366CC;">'requestFullscreen'</span> <span style="color: #000066; font-weight: bold;">in</span> doc <span style="color: #339933;">||</span>
+                    <span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'mozRequestFullScreen'</span> <span style="color: #000066; font-weight: bold;">in</span> doc <span style="color: #339933;">&amp;&amp;</span> document.<span style="color: #660066;">mozFullScreenEnabled</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">||</span>
+                    <span style="color: #3366CC;">'webkitRequestFullScreen'</span> <span style="color: #000066; font-weight: bold;">in</span> doc <span style="color: #339933;">||</span>
+                    <span style="color: #003366; font-weight: bold;">false</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.util.FullScreen-isFullScreen"></a></span><span style="color: #006600; font-style: italic;">/**
+             * Visszaadja, hogy jelenleg teljes kepernyos uzemmodban vagyunk-e?
+             * @return {Boolean}
+             */</span>
+            isFullScreen<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">return</span> el <span style="color: #339933;">?</span> <span style="color: #003366; font-weight: bold;">true</span> <span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">false</span><span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.util.FullScreen-getEl"></a></span><span style="color: #006600; font-style: italic;">/**
+             * Visszaadja azt az elemet, amelyre ervenyes a teljes kepernyos mod.
+             * @return {jQueryElement}
+             */</span>
+            getEl<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">return</span> el<span style="color: #339933;">;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.util.FullScreen-request"></a></span><span style="color: #006600; font-style: italic;">/**
+             * Teljes kepernyore valtas a megadott elemre.
+             * @param {jQueryElement} element
+             */</span>
+            request<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>element<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #003366; font-weight: bold;">var</span> dom <span style="color: #339933;">=</span> element<span style="color: #009900;">&#91;</span><span style="color: #CC0000;">0</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>dom<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>dom.<span style="color: #660066;">requestFullscreen</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                        dom.<span style="color: #660066;">requestFullscreen</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>dom.<span style="color: #660066;">mozRequestFullScreen</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                        dom.<span style="color: #660066;">mozRequestFullScreen</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>dom.<span style="color: #660066;">webkitRequestFullScreen</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                        dom.<span style="color: #660066;">webkitRequestFullScreen</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                    <span style="color: #009900;">&#125;</span>
+                    <span style="color: #006600; font-style: italic;">// TODO: lekérhető valahogy a full screen elem?</span>
+                    el <span style="color: #339933;">=</span> element<span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+                <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>$.<span style="color: #660066;">browser</span>.<span style="color: #660066;">safari</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">resizeRepeater</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #006600; font-style: italic;"><a name="method-Slidrrr.util.FullScreen-exit"></a></span><span style="color: #006600; font-style: italic;">/**
+             * A teljes kepernyo mod kikapcsolasa.
+             */</span>
+            exit<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>document.<span style="color: #660066;">exitFullscreen</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    document.<span style="color: #660066;">exitFullscreen</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>document.<span style="color: #660066;">mozCancelFullScreen</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    document.<span style="color: #660066;">mozCancelFullScreen</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>document.<span style="color: #660066;">webkitCancelFullScreen</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    document.<span style="color: #660066;">webkitCancelFullScreen</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+                el <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>$.<span style="color: #660066;">browser</span>.<span style="color: #660066;">safari</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">resizeRepeater</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #006600; font-style: italic;">// private</span>
+            <span style="color: #006600; font-style: italic;">/*
+             * Safari a FullScreen valtast animalva vegzi, a resize
+             * esemeny nem mindig a megfelelo idoben kovetkezik be, emiatt:
+             */</span>
+            resizeRepeater<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                <span style="color: #003366; font-weight: bold;">var</span> win <span style="color: #339933;">=</span> $<span style="color: #009900;">&#40;</span>window<span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> fn <span style="color: #339933;">=</span> $.<span style="color: #660066;">proxy</span><span style="color: #009900;">&#40;</span>win.<span style="color: #660066;">resize</span><span style="color: #339933;">,</span> win<span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> i<span style="color: #339933;">;</span>
+                <span style="color: #000066; font-weight: bold;">for</span> <span style="color: #009900;">&#40;</span>i <span style="color: #339933;">=</span> <span style="color: #CC0000;">0</span><span style="color: #339933;">;</span> i <span style="color: #339933;">&lt;</span> <span style="color: #CC0000;">20</span><span style="color: #339933;">;</span> i<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+                    window.<span style="color: #660066;">setTimeout</span><span style="color: #009900;">&#40;</span>fn<span style="color: #339933;">,</span> i <span style="color: #339933;">*</span> <span style="color: #CC0000;">100</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+                <span style="color: #009900;">&#125;</span>
+            <span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></body></html>

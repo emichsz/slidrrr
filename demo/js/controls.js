@@ -110,8 +110,9 @@
 				el: $('div.resize', this.el),
 				toolTip: 'Átméretezés',
 				scope: this,
-				handler: function () {
+				handler: function (btn) {
 					this.fireEvent('clickResize', this);
+					btn.el.toggleClass('resize-big-slide');
 				}
 			});
 		},
