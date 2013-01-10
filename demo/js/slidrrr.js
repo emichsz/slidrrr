@@ -85,6 +85,9 @@ var Slidrrr = {
 	 * @member Slidrrr init
 	 */
 	Slidrrr.init = function (config) {
+		if (config.title) {
+			document.title += ' - ' + config.title;
+		}
 		var owner = $('#' + config.renderTo);
 		config.el = owner.html('<div class="slide-show"></div>').find('div');
 		return new Slidrrr.SlideShow(config);
