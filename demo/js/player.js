@@ -244,24 +244,40 @@
 		/* Sajnos egy buta bug-ba futottam bele, mobilon mind a megallitas,
 		 * mind az elinditas utan nincs/illetve kesik a status valtas esemeny,
 		 * emiatt kenytelen voltam kezzel belenyulni.
+		 *
+		 * iPad-on csak akkor indithatjuk el a videot, ha elotte rakattintunk.
 		 */
+		onReady: function () {
+			// megjegyzes: amig CUED, addig nem vagyunk keszen!
+			if (this.yt.i.playerState === YT.PlayerState.CUED) {
+				window.setTimeout($.proxy(this.onReady, this), 100);
+				return;
+			}
+			Slidrrr.player.YouTube.superclass.onReady.call(this);
+		},
 		pause: function () {
 			this.yt.pauseVideo();
-			if ($.browser.mobile) {
+			if (this.yt.i.playerState !== YT.PlayerState.PAUSED) {
 				this.yt.i.playerState = YT.PlayerState.PAUSED;
 				this.onStateChange();
 			}
 			return this;
 		},
 		play: function () {
+			if (this.yt.i.playerState === YT.PlayerState.CUED) {
+				return this;
+			}
 			this.yt.playVideo();
-			if ($.browser.mobile) {
+			if (this.yt.i.playerState !== YT.PlayerState.PLAYING) {
 				this.yt.i.playerState = YT.PlayerState.PLAYING;
 				this.onStateChange();
 			}
 			return this;
 		},
 		gotoAndPlay: function (time) {
+			if (this.yt.i.playerState === YT.PlayerState.CUED) {
+				return this;
+			}
 			this.yt.seekTo(time);
 			return this.play();
 		},
@@ -281,7 +297,7 @@
 			// IE7-tel nem mukodik a YouTube api, emiatt a video
 			// megjelenesen kivul minden mas ugy viselkedik, mint a Mock-ban.
 			// Azaz, ekkor a slide valtas nem automatikus, hanem "kezzel" kell csinalni.
-			var methods = ['play', 'pause', 'gotoAndPlay', 'getCurrentTime', 'getDuration', 'isPlayed'], i;
+			var methods = ['play', 'pause', 'gotoAndPlay', 'getCurrentTime', 'getDuration', 'isPlayed', 'onReady'], i;
 			for (i = 0; i < methods.length; ++i) {
 				this[methods[i]] = Slidrrr.player.Mock.prototype[methods[i]];
 			}
