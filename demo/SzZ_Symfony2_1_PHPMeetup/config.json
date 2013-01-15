@@ -6,6 +6,7 @@
 		'id': 'Ud9OluPSKEk',
 		'duration': 1144
 	},
+	'visualType': 0,
 	'slides': [
 		{'time':   0, 'src': 'SzZ_Symfony2_1_PHPMeetup/01.jpg', 'title': 'Symfony 2'},
 		{'time':  15, 'src': 'SzZ_Symfony2_1_PHPMeetup/02.jpg'},

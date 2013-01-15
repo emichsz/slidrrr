@@ -110,7 +110,7 @@
 				opacity: 0.5
 			}).hide();
 			this.dropItems.first().css('top', 10);
-			this.dropItems.last().css('bottom', this.el.css('bottom'));
+			this.dropItems.last().css('bottom', 50);
 		},
 		fixPosition: function () {
 			var item;

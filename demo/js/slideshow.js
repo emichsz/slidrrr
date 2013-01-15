@@ -9,12 +9,15 @@
 	 * A slide-okat, a control elemeket es a videot osszefogo elem.
 	 */
 	Slidrrr.SlideShow = Slidrrr.extend(Slidrrr.Component, {
+		/**
+		 * @cfg {int} visualType Megjelenes tipusa (0 - nagykep, 1 - nagy lejatszo, 2 - egymas mellett)
+		 */
+		visualType: 2,
 		BIG_SLIDE: 0,
 		BIG_PLAYER: 1,
 		SIDE_BY_SIDE: 2,
 		constructor: function () {
 			Slidrrr.SlideShow.superclass.constructor.apply(this, arguments);
-			this.visualType = this.BIG_SLIDE;
 			this.createItems();
 			this.fixSize();
 			$(window).resize($.proxy(this.fixSize, this));
@@ -81,7 +84,7 @@
 			});
 		},
 		onPlayerStateChange: function () {
-			if (this.player.isPlayed()) {
+			if (this.player && this.player.isPlayed()) {
 				this.startTimer();
 			} else {
 				this.stopTimer();
