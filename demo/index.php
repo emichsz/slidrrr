@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 $movie = 'SzZ_Symfony2_1_PHPMeetup';
-$dir = __DIR__ . DIRECTORY_SEPARATOR;
+$dir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 if (isset($_SERVER{'QUERY_STRING'})) {
 	$configFile = $dir . $_SERVER{'QUERY_STRING'} . DIRECTORY_SEPARATOR . 'config.json';
 	// realpath: az ugyeskedesek kivedesere:
