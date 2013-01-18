@@ -129,41 +129,33 @@ div.controls {
 }
 div.controls div.timeline {
 	position: absolute;
-	top: 16px;
-	left: 50px;
+	top: 15px;
+	left: 54px;
 	height: 10px;
 	background: #696969 url('../img/timeline-bg.png');
 }
+/* a timeline meretet ezzel a ket elemmel hatarozzuk meg */
 div.controls div.timeline-start,
 div.controls div.timeline-end {
 	position: absolute;
-	top: 16px;
-	height: 10px;
-	width: 4px;
-	overflow: hidden;
 }
 div.controls div.timeline-start {
-	left: 46px;
-	background-image: url('../img/timeline-start.png');
+	left: 54px;
 }
 div.controls div.timeline-end {
-	right: 402px;
-	background-image: url('../img/timeline-end.png');
+	right: 450px;
 }
 
 div.controls div.slide {
 	position: absolute;
-	border-right: 1px solid black;
 	top: 0;
 	height: 9px;
 	overflow: hidden;
 	z-index: 10;
 	cursor: pointer;
 }
-div.controls div.last-slide {
-	border-right: none;
-}
-div.controls div.slide div {
+
+div.controls div.slide div.background {
 	background-image: url('../img/timeline-act.png');
 	height: 100%;
 	width: 0;
@@ -172,8 +164,42 @@ div.controls div.slide div {
 div.controls div.slide:hover {
 	background-image: url('../img/timeline-hover.png');
 }
-div.controls div.slide:hover div {
+div.controls div.slide:hover div.background {
 	background-image: url('../img/timeline-act-hover.png');
+}
+
+/* az idovonalon a slide valtas jelolese */
+div.controls div.timeline div.slide div.border {
+	width: 4px;
+	height: 10px;
+	background-image: url('../img/timeline-border.png');
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+div.controls div.timeline div.watched div.border {
+	background-image: url('../img/timeline-act-border.png');
+}
+div.controls div.timeline div.last-slide div.border {
+	display: none;
+}
+
+/* a idovonal ket szele (csak dekoracio) */
+div.controls div.timeline div.start,
+div.controls div.timeline div.end {
+	width: 4px;
+	height: 10px;
+	position: absolute;
+	top: 0;
+	z-index: 11;
+}
+div.controls div.timeline div.start {
+	background-image: url('../img/timeline-start.png');
+	left: 0;
+}
+div.controls div.timeline div.end {
+	background-image: url('../img/timeline-end.png');
+	right: 0;
 }
 
 div.controls div.timer {

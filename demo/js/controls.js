@@ -134,8 +134,9 @@
 			});
 		},
 		fixSize: function () {
-			var width = this.sections.el.offset().left - this.timeline.el.offset().left - 20;
-			this.timeline.setWidth(width);
+			var start = this.el.offset().left,
+				end = $('div.timeline-end', this.el).offset().left;
+			this.timeline.setWidth(Math.round(end - start));
 		},
 		setCurrentTime: function (time) {
 			time = Math.round(time);
@@ -298,7 +299,7 @@
 		fixPosition: function () {
 			this.el.outerHeight(76).css({
 				opacity: 0,
-				left: parseInt(this.slide.css('left'), 10) - 1
+				left: parseInt(this.slide.css('left'), 10)
 			}).animate({opacity: 1}, this.fadeTime);
 		},
 		/**
@@ -319,32 +320,39 @@
 		render: function () {
 			this.el.append(this.getHtml());
 			this.slideElements = $('div.slide', this.el);
+			this.slideElements.last().addClass('last-slide');
 			this.addSlidesEvents();
 		},
 		getHtml: function () {
 			var slides = this.slides,
 				total = this.duration,
+				tpl = '<div class="slide" data-duration="{0}" data-time="{1}"><div class="background"></div><div class="border"></div></div>',
 				result = [],
 				i,
 				duration;
 			for (i = 0; i < slides.length - 1; ++i) {
 				duration = slides[i + 1].time - slides[i].time;
-				result.push('<div class="slide" data-duration="', duration, '" data-time="', slides[i].time, '"><div></div></div>');
+				result.push(tpl.replace('{0}', duration).replace('{1}', slides[i].time));
 				total -= duration;
 			}
-			result.push('<div class="slide last-slide" data-duration="', total, '" data-time="', slides[slides.length - 1].time, '"><div></div></div>');
-			return result.join('');
+			result.push(tpl.replace('{0}', total).replace('{1}', slides[slides.length - 1].time));
+			// a ket plusz div dekoraciohoz:
+			return result.join('') + '<div class="start"></div><div class="end"></div>';
 		},
 		setWidth: function (width) {
-			var duration = this.duration,
-				left = 0;
+			var duration = this.duration, left = 0, lastEl;
 			this.el.outerWidth(width);
 			this.slideElements.each(function () {
 				var el = $(this),
 					slideWidth = Math.round(el.data('duration') / duration * width);
-				el.css('left', left).outerWidth(slideWidth);
+				el.css('left', left).width(slideWidth);
 				left += slideWidth;
 			});
+			// kerekitesei hibak elfedese miatt a kulonbseget hozzaadjuk az utolsohoz:
+			if (width !== left) {
+				lastEl = this.slideElements.last();
+				lastEl.width(lastEl.width() + (width - left));
+			}
 			this.fireEvent('resize', width, this.el.height());
 		},
 		addSlidesEvents: function () {
@@ -377,7 +385,12 @@
 				} else {
 					width = parseInt((time - start) / duration * 100, 10) + '%';
 				}
-				$('div', el).css('width', width);
+				$('div.background', el).css('width', width);
+				if (width === '100%') {
+					el.addClass('watched');
+				} else {
+					el.removeClass('watched');
+				}
 			});
 		}
 	});
