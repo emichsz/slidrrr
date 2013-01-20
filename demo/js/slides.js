@@ -14,8 +14,13 @@
 		render: function () {
 			this.el.html(this.getHtml());
 			this.fixClasses();
-			this.addClickEvents();
 			this.preloadNextImages();
+			if ($.browser.touch) {
+				$('.prev, .next', this.el).remove();
+				this.addSwipeEvents();
+			} else {
+				this.addClickEvents();
+			}
 		},
 		getHtml: function () {
 			return [
@@ -90,6 +95,19 @@
 			if (images.length) {
 				Slidrrr.util.Preloader.load(images);
 			}
+		},
+		addSwipeEvents: function () {
+			var me = this;
+			this.el.on('swiperight', function() {
+				if (me.slides[me.index - 1]) {
+					me.fireEvent('step', me.index - 1);
+				}
+			});
+			this.el.on('swipeleft', function() {
+				if (me.slides[me.index + 1]) {
+					me.fireEvent('step', me.index + 1);
+				}
+			});
 		}
 	});
 }());
