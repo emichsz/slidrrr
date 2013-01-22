@@ -20,6 +20,7 @@ $configFile = $dir . $movie . DIRECTORY_SEPARATOR . 'config.json';
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/jquery.event.move.js"></script>
 <script src="js/jquery.event.swipe.js"></script>
+<script src="js/jquery.ui.touch-punch.js"></script>
 <script src="js/slidrrr.js" type="text/javascript"></script>
 <script src="js/slideshow.js" type="text/javascript"></script>
 <script src="js/tooltip.js" type="text/javascript"></script>
