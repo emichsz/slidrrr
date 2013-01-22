@@ -76,6 +76,7 @@
 			var me = this;
 			this.el.append('<div class="drag"></div>');
 			this.el.draggable({
+				disabled: this.disabledDragging,
 				start: function () {
 					me.dropItems.show();
 				},
@@ -141,9 +142,14 @@
 			this.toggleBtn.on('click', $.proxy(this.fireEvent, this, 'toggle'));
 		},
 		/**
+		 * @cfg {Boolean} disabledDragging A mozgatas tiltasa.
+		 */
+		disabledDragging: false,
+		/**
 		 * Engedelyezzuk a mozgatast.
 		 */
 		enableDragging: function () {
+			this.disabledDragging = false;
 			this.el.draggable('enable');
 			this.el.css('cursor', 'move');
 		},
@@ -151,6 +157,7 @@
 		 * Tiltjuk a mozgatast.
 		 */
 		disableDragging: function () {
+			this.disabledDragging = true;
 			this.el.draggable('disable');
 			this.el.css('cursor', 'default');
 		}
