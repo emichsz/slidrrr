@@ -1,5 +1,5 @@
 /*jslint plusplus: true */
-/*global window, document, Image, $, navigator */
+/*global window, document, Image, $ */
 
 var Slidrrr = {
 	version: '0.1.12'
@@ -94,7 +94,6 @@ var Slidrrr = {
 	 * Ez az osztaly valositja meg az esemenykezelest.
 	 */
 	Slidrrr.Observable = Slidrrr.extend(Object, {
-		events: {},
 		constructor: function (config) {
 			this.initialConfig = config || {};
 			$.extend(this, config);
@@ -115,6 +114,9 @@ var Slidrrr = {
 		 * @param {Object} scope (optional) Referencia a <code>this</code> valtozora
 		 */
 		on: function (eventName, callback, scope) {
+			if (!this.events) {
+				this.events = {};
+			}
 			if (!this.events[eventName]) {
 				this.events[eventName] = [];
 			}

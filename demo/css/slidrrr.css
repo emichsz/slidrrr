@@ -38,6 +38,7 @@ div.slide-show {
 	height: 100%;
 }
 div.slide-show div.slides {
+	background-color: #333;
 	position: absolute;
 	top: 0;
 	left: 0;

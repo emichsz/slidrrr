@@ -151,7 +151,14 @@
 		showThumb: function (i) {
 			this.thumb = new Slidrrr.controls.Thumb({
 				src: this.slides[i].src.replace('.jpg', '_thumb.jpg'),
-				slide: $($('div.slide', this.el).get(i))
+				slide: $($('div.slide', this.el).get(i)),
+				listeners: {
+					scope: this,
+					click: function () {
+						var time = this.slides[i].time;
+						this.player.gotoAndPlay(time);
+					}
+				}
 			});
 			this.thumb.show();
 		},
@@ -288,6 +295,7 @@
 			ownerCt.append(this.getHtml());
 			this.el = $('div.thumb:last', ownerCt);
 			this.fixPosition();
+			this.addClickEvent();
 		},
 		getHtml: function () {
 			return [
@@ -301,6 +309,16 @@
 				opacity: 0,
 				left: parseInt(this.slide.css('left'), 10)
 			}).animate({opacity: 1}, this.fadeTime);
+		},
+		addClickEvent: function () {
+			var me = this;
+			$('img', this.el).on('click', function () {
+				/**
+				 * @event click
+				 * Amikor rakattintunk a kepre.
+				 */
+				me.fireEvent('click');
+			});
 		},
 		/**
 		 * Komponens eltuntetese.
