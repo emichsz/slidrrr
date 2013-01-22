@@ -24,7 +24,7 @@
 				'<div class="sections"></div>',
 				'<div class="timer"></div>',
 				// gombok:
-				'<div class="play pause"></div>',
+				'<div class="play"></div>',
 				'<div class="resize"></div>',
 				'<div class="fullscreen"></div>'
 			].join('');
