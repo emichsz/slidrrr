@@ -42,6 +42,20 @@ div.slide-show div.slides {
 	position: absolute;
 	top: 0;
 	left: 0;
+	overflow: hidden;
+}
+div.slide-show div.slides div.containment {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	z-index: -1;
+}
+div.slide-show div.slides div.images {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 div.slide-show div.slides img {
 	position: absolute;
