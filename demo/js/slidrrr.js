@@ -81,7 +81,7 @@ var Slidrrr = {
 		if (config.title) {
 			document.title += ' - ' + config.title;
 		}
-		var owner = $('#' + config.renderTo);
+		var owner = $('#playrrr_container');
 		config.el = owner.html('<div class="slide-show"></div>').find('div');
 		return new Slidrrr.SlideShow(config);
 	};
