@@ -26,10 +26,6 @@ var Slidrrr = {
 		});
 		return this;
 	};
-	$(function () {
-		// kijeloles tiltas:
-		$(document.body).unselectable();
-	});
 	(function () {
 		$.browser.touch = ('ontouchstart' in document.documentElement);
 	}());

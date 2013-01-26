@@ -32,6 +32,7 @@
 			if (this.backgroundColor) {
 				this.el.css('background-color', this.backgroundColor);
 			}
+			this.el.unselectable();
 			// iPad-on a kezelo felulet pont nem latszodik, emiatt...
 			// TODO: ezt a feltetelt lecserelni.
 			//       de: $('window').height() === undefined
