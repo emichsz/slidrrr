@@ -342,4 +342,72 @@
 			this.onReady();
 		}
 	});
+	/**
+	 * @class Slidrrr.player.Ustream
+	 * @extends Slidrrr.player.Base
+	 * Az Ustream api-t hasznalo lejatszo.
+	 */
+	Slidrrr.player.Ustream = Slidrrr.extend(Slidrrr.player.Base, {
+		constructor: function () {
+			Slidrrr.player.Ustream.superclass.constructor.apply(this, arguments);
+			this.loadUstreamScript();
+		},
+		loadUstreamScript: function () {
+			var tag = document.createElement('script'),
+				firstScriptTag = document.getElementsByTagName('script')[0];
+			tag.src = "//static.ustream.tv/js/libs/ustream-embedapi.min.js";
+			tag.onerror = function () {
+				Slidrrr.util.Log.error("Ustream api: Failed to load...");
+			};
+			tag.onload = $.proxy(this.createIframe, this);
+			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		},
+		createIframe: function () {
+			var id = Slidrrr.id();
+			// TODO: kontroll elemeket el kellene tuntetni
+			var html = '<iframe id="' + id + '" width="' + this.getWidth() + '" height="' + this.getHeight() + '" src="http://www.ustream.tv/embed/recorded/' + this.videoId + '?wmode=direct" scrolling="no" frameborder="0" style="border:0 none transparent;"></iframe>'
+			this.el.append(html);
+			this.viewer = UstreamEmbed(id);
+			// TODO: az esemenyeket el kellene ernem
+			this.viewer.addListener('live', alert);
+			this.viewer.addListener('offline', alert);
+			this.viewer.addListener('finished', alert);
+			this.viewer.addListener('playing', alert);
+			this.onReady();
+		},
+		// TODO: le kellene kernem a video statusat!
+		played: false,
+		isPlayed: function () {
+			return this.played;
+		},
+		play: function () {
+			this.played = true;
+			this.viewer.callMethod('play');
+			this.fireEvent('stateChange');
+			return this;
+		},
+		pause: function () {
+			this.played = false;
+			this.viewer.callMethod('pause');
+			this.fireEvent('stateChange');
+			return this;
+		},
+		gotoAndPlay: function (time) {
+			this.viewer.callMethod('seek', time);
+			return this.play();
+		},
+		currentTime: 0,
+		getCurrentTime: function () {
+			var me = this;
+			// TODO: ez sem jo igy, ide nem callback kell!
+			this.viewer.getProperty('progress', function (time) {
+				me.currentTime = time;
+			});
+			return Math.max(0, this.currentTime);
+		},
+		setSize: function (width, height) {
+			$('iframe', this.el).width(width).height(height);
+			return Slidrrr.player.Ustream.superclass.setSize.call(this, width, height);
+		}
+	});
 }());

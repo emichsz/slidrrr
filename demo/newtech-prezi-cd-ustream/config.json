@@ -1,0 +1,22 @@
+{
+	'title': 'Newtech - Miért nem lesz 100%-os rendelkezésre állásunk?',
+	'renderTo': 'container',
+	'backgroundColor': '#333',
+	'video': {
+		'type': 'ustream',
+		'id': 28333986,
+		'duration': 616
+	},
+	'visualType': 2,
+	'slides': [
+		{'time':   0, 'src': 'newtech-prezi-cd/00.jpg', 'title': 'Miért nem lesz 100%-os rendelkezésre állásunk?'},
+		{'time':  3, 'src': 'newtech-prezi-cd/01.jpg', 'title': 'Kihívások'},
+		{'time':  6, 'src': 'newtech-prezi-cd/02.jpg', 'title': 'Havi deployok száma'},
+		{'time':  16, 'src': 'newtech-prezi-cd/03.jpg', 'title': 'Veszély'},
+		{'time':  31, 'src': 'newtech-prezi-cd/04.jpg', 'title': 'Continuous Delivery'},
+		{'time':  84, 'src': 'newtech-prezi-cd/05.jpg', 'title': 'Infrastruktúra kiesések'},
+		{'time':  185, 'src': 'newtech-prezi-cd/06.jpg', 'title': 'Kiesés hosszúság eloszlás'},
+		{'time':  239, 'src': 'newtech-prezi-cd/07.jpg'},
+		{'time':  274, 'src': 'newtech-prezi-cd/08.jpg'}
+	]
+}

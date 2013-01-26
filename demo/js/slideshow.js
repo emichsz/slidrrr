@@ -46,7 +46,12 @@
 			this.createSlidesPanel();
 		},
 		createPlayer: function () {
-			this.player = new Slidrrr.player.YouTube({
+			var Player = Slidrrr.player.YouTube;
+			if (this.video.type && this.video.type === 'ustream') {
+				Player = Slidrrr.player.Ustream;
+			}
+
+			this.player = new Player({
 				el: $('div.video', this.el),
 				videoId: this.video.id,
 				width: this.video.width,
