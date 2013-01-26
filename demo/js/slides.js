@@ -25,33 +25,52 @@
 		getHtml: function () {
 			return '<div class="images">' + this.getImgHtml(this.index) + '</div>';
 		},
-		getImgHtml: function (index) {
-			var src = this.slides[index] ? this.slides[index].src : 'img/pixel.gif';
-			return '<img src="' + src + '" alt="" width="100%" height="100%" />';
+		getImgHtml: function (index, config) {
+			var result = '<img alt="" width="100%" height="100%"';
+			result += ' src = "' + (this.slides[index] ? this.slides[index].src : 'img/pixel.gif') + '"';
+			if (config && config.cls) {
+				result += ' class="' + config.cls + '"';
+			}
+			if (config && config.style) {
+				result += ' style="' + config.style + '"';
+			}
+			return result + ' />';
 		},
 		addDragEvent: function () {
 			var me = this;
-			$('div.images', this.el).draggable({
+			this.imageCt.draggable({
 				axis: 'x',
 				containment: this.getContainment(),
 				start: function () {
-					me.imageCt.append(me.getImgHtml(me.index + 1));
-					$('img:last', me.imageCt).css('left', me.el.width()).addClass('neighbor');
-					me.imageCt.append(me.getImgHtml(me.index - 1));
-					$('img:last', me.imageCt).css('left', -me.el.width()).addClass('neighbor');
+					me.imageCt.append(me.getImgHtml(me.index + 1, {style: 'left: ' + me.el.width() + 'px', cls: 'neighbor'}));
+					me.imageCt.append(me.getImgHtml(me.index - 1, {style: 'left: ' + (me.el.width() * -1) + 'px', cls: 'neighbor'}));
 				},
 				stop: function (e, ui) {
-					var width = ui.helper.width();
-					var diff = Math.abs(ui.position.left);
+					var width = me.el.width(),
+						index = me.index,
+						left = 0,
+						diff = Math.abs(ui.position.left);
 					if (diff * 2 > width) {
 						if (ui.position.left > 1) {
-							me.stepPrevious();
+							if (me.slides[index - 1]) {
+								left = width;
+							}
 						} else {
-							me.stepNext();
+							if (me.slides[index + 1]) {
+								left = -width;
+							}
 						}
 					}
-					ui.helper.css('left', 0);
-					$('img.neighbor').remove();
+					me.imageCt.draggable('disable');
+					me.imageCt.animate({'left': left}, width - diff, function () {
+						if (left) {
+							me.setCurrentTime(me.slides[index + (left > 0 ? -1 : 1)].time, true);
+							me.fireEvent('step', index + (left > 0 ? -1 : 1));
+						} else {
+							$('img.neighbor', me.imageCt).remove();
+						}
+						me.imageCt.draggable('enable');
+					});
 				}
 			});
 		},
@@ -77,7 +96,7 @@
 				this.fireEvent('step', this.index - 1);
 			}
 		},
-		setCurrentTime: function (time) {
+		setCurrentTime: function (time, skipAnim) {
 			var me = this, oldImage, index = this.time2index(time);
 			if (index === this.index) {
 				return;
@@ -85,8 +104,8 @@
 			this.index = index;
 			this.fixClasses();
 			oldImage = $('img', this.imageCt);
-			this.imageCt.append(this.getImgHtml(index));
-			oldImage.css('z-index', 1).animate({opacity: 0}, 200, function () {
+			this.imageCt.css('left', 0).append(this.getImgHtml(index));
+			oldImage.css('z-index', 1).animate({opacity: 0}, skipAnim ? 0 : 200, function () {
 				oldImage.remove();
 				// Firefox-om néha(???) a képeket nem jelenítette meg(???)
 				// az alábbi kis hack segített ezen:

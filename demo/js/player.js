@@ -221,6 +221,9 @@
 			var tag = document.createElement('script'),
 				firstScriptTag = document.getElementsByTagName('script')[0];
 			tag.src = "//www.youtube.com/iframe_api";
+			tag.onerror = function () {
+				Slidrrr.util.Log.error("YouTube api: Failed to load...");
+			};
 			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 		},
 		render: function () {
@@ -271,10 +274,12 @@
 			return this;
 		},
 		play: function () {
-			if (this.yt.i.playerState === YT.PlayerState.CUED) {
+			if (!this.yt || this.yt.i.playerState === YT.PlayerState.CUED) {
 				return this;
 			}
-			this.yt.playVideo();
+			if (this.yt.playVideo) {
+				this.yt.playVideo();
+			}
 			if (this.yt.i.playerState !== YT.PlayerState.PLAYING) {
 				this.yt.i.playerState = YT.PlayerState.PLAYING;
 				this.onStateChange();
@@ -282,16 +287,42 @@
 			return this;
 		},
 		gotoAndPlay: function (time) {
-			if (this.yt.i.playerState === YT.PlayerState.CUED) {
+			this.currentTime = time;
+			if (!this.yt || this.yt.i.playerState === YT.PlayerState.CUED) {
 				return this;
 			}
-			this.yt.seekTo(time);
+			if (this.yt.seekTo) {
+				this.yt.seekTo(time);
+			}
 			return this.play();
 		},
+		/* Eredetileg nem lett volna szukseg a this.currentTime-ra, mivel a YT is kezeli az idot.
+		 * Mi meg miert tudnank jobban, hogy o eppen hol tart? :)
+		 * Am fentall a kovetkezo jelenseg:
+		 * - beallitom az uj idopontot
+		 * - elindul az elotoltes
+		 * - kozben lekerem az idot, meg a regi idopontot kapom vissza
+		 * Ez swipe-nel volt kulonosen zavaro.
+		 */
+		currentTime: null,
 		getCurrentTime: function () {
-			return this.yt.getCurrentTime();
+			var result = this.getYtCurrentTime();
+			if (this.currentTime !== null) {
+				if (Math.abs(this.currentTime - result) > 3) {
+					// azaz, meg nem fejezodott be a seekTo:
+					return this.currentTime;
+				}
+				this.currentTime = null;
+			}
+			return result;
+		},
+		getYtCurrentTime: function () {
+			return this.yt ? this.yt.getCurrentTime() : 0;
 		},
 		isPlayed: function () {
+			if (!this.yt || !this.yt.getPlayerState) {
+				return false;
+			}
 			return this.yt.getPlayerState() === YT.PlayerState.PLAYING;
 		},
 		setSize: function (width, height) {
