@@ -115,6 +115,10 @@
 					btn.el.toggleClass('resize-big-slide');
 				}
 			});
+			// ha egymas melletti kinezettel indulunk:
+			if (this.visualType === Slidrrr.SlideShow.prototype.SIDE_BY_SIDE) {
+				this.resizeBtn.el.addClass('resize-big-slide');
+			}
 		},
 		createFullScreenButton: function () {
 			this.fullScreenBtn = new Slidrrr.Button({

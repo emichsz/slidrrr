@@ -74,6 +74,7 @@
 				duration: this.video.duration,
 				slides: this.slides,
 				player: this.player,
+				visualType: this.visualType,
 				listeners: {
 					scope: this,
 					clickResize: function () {
