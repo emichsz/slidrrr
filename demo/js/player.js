@@ -256,10 +256,13 @@
 		 * emiatt kenytelen voltam kezzel belenyulni.
 		 *
 		 * iPad-on csak akkor indithatjuk el a videot, ha elotte rakattintunk.
+		 *
+		 * Ezt a hack-et ki kellett venni, mert a YT player megvaltozott.
+		 * TODO: kivizsgalni, javitani!
 		 */
 		onReady: function () {
 			// megjegyzes: amig CUED, addig nem vagyunk keszen!
-			if (this.yt.i.playerState === YT.PlayerState.CUED) {
+			if (this.yt.getPlayerState() === YT.PlayerState.CUED) {
 				window.setTimeout($.proxy(this.onReady, this), 100);
 				return;
 			}
@@ -267,28 +270,26 @@
 		},
 		pause: function () {
 			this.yt.pauseVideo();
-			if (this.yt.i.playerState !== YT.PlayerState.PAUSED) {
-				this.yt.i.playerState = YT.PlayerState.PAUSED;
+			if (this.yt.getPlayerState() !== YT.PlayerState.PAUSED) {
 				this.onStateChange();
 			}
 			return this;
 		},
 		play: function () {
-			if (!this.yt || this.yt.i.playerState === YT.PlayerState.CUED) {
+			if (!this.yt || this.yt.getPlayerState() === YT.PlayerState.CUED) {
 				return this;
 			}
 			if (this.yt.playVideo) {
 				this.yt.playVideo();
 			}
-			if (this.yt.i.playerState !== YT.PlayerState.PLAYING) {
-				this.yt.i.playerState = YT.PlayerState.PLAYING;
+			if (this.yt.getPlayerState() !== YT.PlayerState.PLAYING) {
 				this.onStateChange();
 			}
 			return this;
 		},
 		gotoAndPlay: function (time) {
 			this.currentTime = time;
-			if (!this.yt || this.yt.i.playerState === YT.PlayerState.CUED) {
+			if (!this.yt || this.yt.getPlayerState() === YT.PlayerState.CUED) {
 				return this;
 			}
 			if (this.yt.seekTo) {
